@@ -34,6 +34,10 @@ img {
     letter-spacing: 0.5px;
 }
 
+.navigation-link:hover {
+    color: #4592FF;
+}
+
 button {
     cursor: pointer;
 }
@@ -247,6 +251,10 @@ button {
     font-size: 14px;
     line-height: 20px;
     padding: 10px;
+}
+
+.more:hover {
+    color: #4592FF;
 }
 
 .goods-card {
