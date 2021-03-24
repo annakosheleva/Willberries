@@ -53,6 +53,8 @@ modalCart.addEventListener('click', function (event) {
 const more = document.querySelector('.more');
 const navigationLink = document.querySelectorAll('.navigation-link');
 const longGoodsList = document.querySelector('.long-goods-list');
+const showAccessories = document.querySelectorAll('.show-accessories');
+const showClothing = document.querySelectorAll('.show-clothing');
 
 const getGoods = async function () {
 	const result = await fetch('db/db.json');
@@ -120,13 +122,27 @@ navigationLink.forEach(function(link) {
 	})
 });
 
-
-
-// ДЗ пункт 1
+// button "All" in menu navigation
 
 const navigationLinkAll = document.querySelector('.navigation-link-all');
 
 navigationLinkAll.addEventListener('click', function(event) {
 	event.preventDefault();
 	getGoods().then(renderCards);
+});
+
+// button "view all"
+
+showAccessories.forEach(item => {
+	item.addEventListener('click', event => {
+		event.preventDefault();
+		filterCards('category', 'Accessories');
+	});
+});
+
+showClothing.forEach(item => {
+	item.addEventListener('click', event => {
+		event.preventDefault();
+		filterCards('category', 'Clothing');
+	});
 });
