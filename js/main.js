@@ -19,19 +19,49 @@ const showAccessories = document.querySelectorAll('.show-accessories');
 const showClothing = document.querySelectorAll('.show-clothing');
 const cartTableGoods = document.querySelector('.cart-table__goods');
 const cardTableTotal = document.querySelector('.card-table__total');
+const cartCount = document.querySelector('.cart-count');
+const btnDanger = document.querySelector('.btn-danger');
 
 
+const checkGoods = () => {
 
-const getGoods = async () => {
-	const result = await fetch('db/db.json');
-	if (!result.ok) {
-		throw 'Ошибочка вышла: ' + result.status
-	}
-	return await result.json();
+	const data = [];
+
+	return async () => {
+		if (data.lenght) return data;
+		
+		const result = await fetch('db/db.json');
+		if (!result.ok) {
+			throw 'Ошибочка вышла: ' + result.status
+		}
+		data.push(...(await result.json()));
+
+		return data
+	};
 };
+
+const getGoods = checkGoods()
+
+// const getGoods = async () => {
+// 	const result = await fetch('db/db.json');
+// 	if (!result.ok) {
+// 		throw 'Ошибочка вышла: ' + result.status
+// 	}
+// 	return await result.json();
+// };
 
 const cart = {
 	cartGoods: [],
+	countQuantity() {
+		cartCount.textContent = this.cartGoods.reduce((sum, item) => {
+			return sum + item.count
+		}, 0)
+	},
+	clearCart() {
+		this.cartGoods.length = 0;
+		this.countQuantity();
+		this.renderCart();
+	},
 	renderCart() {
 		cartTableGoods.textContent = '';
 		this.cartGoods.forEach(({ id, name, price, count }) => {
@@ -61,6 +91,7 @@ const cart = {
 	deleteGood(id) {
 		this.cartGoods = this.cartGoods.filter(item => id !== item.id);
 		this.renderCart();
+		this.countQuantity();
 	},
 	minusGood(id) {
 		for (const item of this.cartGoods) {
@@ -74,6 +105,7 @@ const cart = {
 			}
 		}
 		this.renderCart();
+		this.countQuantity();
 	},
 	plusGood(id) {
 		for (const item of this.cartGoods) {
@@ -83,6 +115,7 @@ const cart = {
 			}
 		}
 		this.renderCart();
+		this.countQuantity();
 	},
 	addCartGoods(id) {
 		const goodItem = this.cartGoods.find(item => item.id === id);
@@ -98,10 +131,15 @@ const cart = {
 						price,
 						count: 1
 					});
+					this.countQuantity();
 				});
 		}
 	},
 }
+
+btnDanger.addEventListener('click', () => {
+	cart.clearCart();
+});
 
 document.body.addEventListener('click', event => {
 	const addToCart = event.target.closest('.add-to-cart');

@@ -59,6 +59,10 @@ button {
     outline: none;
 }
 
+.button:hover {
+    background: #096af3;
+}
+
 .button-icon, .button-price {
     margin-right: 10px;
     
@@ -71,6 +75,20 @@ button {
 .button-icon:last-child {
     margin-right: 0;
     
+}
+
+.btn-danger {
+    background-color: tomato;
+    display: block;
+    margin-left: auto;
+}
+
+.btn-danger:hover {
+    background-color: rgb(248, 48, 12);
+}
+
+.cart-buy:hover {
+    background-color: #048522;
 }
 
 .cart-count {
