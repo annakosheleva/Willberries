@@ -287,3 +287,38 @@ showClothing.forEach(item => {
 		filterCards('category', 'Clothing');
 	});
 });
+
+
+// Server
+
+const modalForm = document.querySelector('.modal-form');
+
+const postData = datauser => fetch('server.php', {
+	method: 'POST',
+	body: datauser,
+});
+
+modalForm.addEventListener('submit', event => {
+	event.preventDefault();
+
+	const formData = new FormData(modalForm);
+	formData.append('cart', JSON.stringify(cart.cartGoods))
+
+	postData(formData)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(response.status);
+			}
+			alert('Ваш заказ успешно отправлен!')
+			console.log(response.statusText);
+		})
+		.catch(err => {
+			alert('К сожалению, произошла ошибка! Повторите ошибку позже');
+			console.error(err);
+		})
+		.finally(() => {
+			closeModal();
+			modalForm.reset();
+			cart.cartGoods.length = 0;
+		});
+});
